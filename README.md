@@ -13,7 +13,36 @@ As usual, `npm run build` creates the website's CSS file.
  - `light`: `--color-secondary: oklch(94.7% 0.026 71.191);`
  - `dark`: `--color-secondary: oklch(27.581% 0.064 261.069);`
 
-In the output CSS, we can find 3 occurrences of the original `--color-secondary`.
+In the output CSS, we can find:
+ - 3 occurrences of the original `--color-secondary` divided in:
+      - 2x for the `light` theme:
+         ```
+         :where(:root),
+        [data-theme=light] { ...
+        ```
+        and
+        ```
+        :root:has(input.theme-controller[value=light]:checked) { ...
+        ```
+      - 1x for the `dark` theme:
+        ```
+        @media (prefers-color-scheme:dark) {
+        :root:not([data-theme]) { ...
+        ```
+ - 3 occurrences of the modified values, divided in:
+     - 1x for the `light` theme:
+       ```
+       :is(:root:has(input.theme-controller[value=light]:checked), [data-theme=light]) { ...
+       ```
+     - 2x for the `dark` theme:
+       ```
+       @media (prefers-color-scheme:dark) {
+        :root:not([data-theme]) { ...
+       ```
+       and
+       ```
+       :is(:root:has(input.theme-controller[value=dark]:checked), [data-theme=dark]) { ...
+       ```
 
 ## NPM packages
 
